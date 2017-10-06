@@ -15,8 +15,12 @@ class CommentForm extends Component{
         this.setState({text: event.target.value});
     }
     handleSubmit(event) {
-        alert('Author is: ' + this.state.author + '\n' + 'Text is: ' + this.state.text
-        )
+        event.preventDefault();
+        var author = this.state.author.trim();
+        var text = this.state.text.trim();
+        this.props.onCommentSubmit({author: author, text: text});
+        this.setState({author: '', text: ''})
+        // alert('Author is: ' + this.state.author + 'Text is: ' + this.state.text
     }
     render(){
 
