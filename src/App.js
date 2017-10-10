@@ -1,5 +1,6 @@
 import React, {Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import CommentContainer from './components/comments/CommentContainer'
 import CommentForm from './components/form/CommentForm'
 import './vendors/bootstrap/css/bootstrap.min.css'
@@ -19,20 +20,38 @@ const comments_array = [
     // {id: 10, author: "Kristina Anderson", text: "Mission accomplished. It's magical!"}
 ];
 
+
 class App extends Component {
     static  propTypes = {
         data: PropTypes.array
     };
     constructor(props) {
         super(props);
-        this.state = {comments: comments_array};
+        this.state = {data: [] };
         this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     }
+    componentDidMount (){
+        this.getComments();
+    }
+    getComments(){
+
+        axios.get('https://jsonplaceholder.typicode.com/comments?postId=2')
+            .then(data =>{
+                this.setState({data: data.data});
+            })
+            .catch(function(data) {
+                if(data instanceof Error) {
+                    console.log(data);
+                } else {
+                    console.log(data);
+                }
+            });
+    }
     handleCommentSubmit(comment) {
-        var comments = this.state.comments;
+        let comments = this.state.data;
         comment.id = Date.now();
-        var newComments  = comments.concat([comment])
-        this.setState({comments: newComments});
+        let newComments  = comments.concat([comment])
+        this.setState({data: newComments});
     }
 
     render() {
@@ -42,13 +61,13 @@ class App extends Component {
                 <div className="row">
                     <h1>Comments</h1>
                 </div>
-
-                <div className="row">
-                    <CommentContainer data={this.state.comments}/>
-                </div>
                 <div className="row">
                     <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
                 </div>
+                <div className="row">
+                    <CommentContainer data={this.state.data}/>
+                </div>
+
             </div>
         );
     }

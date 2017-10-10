@@ -5,19 +5,19 @@ class Comment extends Component{
     static propTypes = {
         data: PropTypes.shape({
             id: PropTypes.number.isRequired,
-            author: PropTypes.string.isRequired,
-            text: PropTypes.string.isRequired
+            name: PropTypes.string.isRequired,
+            body: PropTypes.string.isRequired
     })
     }
 
     render() {
-        var author = this.props.data.author;
-        var text = this.props.data.text;
+        var name = this.props.data.name;
+        var body = this.props.data.body;
 
         return(
             <div className="comment-box">
-                <h4 className="title">{author}</h4>
-                {text}
+                <h4 className="title">{name}</h4>
+                {body}
             </div>
         );
     }

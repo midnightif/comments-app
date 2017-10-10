@@ -9,18 +9,17 @@ class CommentForm extends Component{
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleAuthorChange(event) {
-        this.setState({author: event.target.value});
+        this.setState({name: event.target.value});
     }
     handleTextChange(event) {
-        this.setState({text: event.target.value});
+        this.setState({body: event.target.value});
     }
     handleSubmit(event) {
         event.preventDefault();
-        var author = this.state.author.trim();
-        var text = this.state.text.trim();
-        this.props.onCommentSubmit({author: author, text: text});
-        this.setState({author: '', text: ''})
-        // alert('Author is: ' + this.state.author + 'Text is: ' + this.state.text
+        var name = this.state.name.trim();
+        var body = this.state.body.trim();
+        this.props.onCommentSubmit({name: name, body: body});
+        this.setState({name: '', body: ''})
     }
     render(){
 
@@ -29,13 +28,13 @@ class CommentForm extends Component{
                 <div className="form-group">
                     <label htmlFor="name">Name:</label>
                     <input type="name" className="form-control" id="name" placeholder="Enter your name" name="name"
-                           value={this.state.author}
+                           value={this.state.name}
                            onChange={this.handleAuthorChange}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="comment">Comment:</label>
-                        <textarea className="form-control" rows="5" id="comment" placeholder="Say something..." name="comment"
-                                  value={this.state.text}
+                        <textarea className="form-control" rows="5" id="comment" placeholder="Say something..." name="body"
+                                  value={this.state.body}
                                   onChange={this.handleTextChange}/>
                 </div>
                 <div className="form-group">
