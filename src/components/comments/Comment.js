@@ -5,13 +5,13 @@ class Comment extends Component{
     static propTypes = {
         data: PropTypes.shape({
             id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired,
+            // name: PropTypes.object.isRequired,
             body: PropTypes.string.isRequired
     })
     }
 
     render() {
-        var name = this.props.data.name;
+        var name = this.props.data.title;
         var body = this.props.data.body;
 
         return(
