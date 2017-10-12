@@ -9,31 +9,35 @@ class CommentForm extends Component{
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleAuthorChange(event) {
-        this.setState({name: event.target.value});
+        this.setState({user: event.target.value});
     }
     handleTextChange(event) {
         this.setState({body: event.target.value});
     }
     handleSubmit(event) {
         event.preventDefault();
-        var name = this.state.name.trim();
+        if (!user || !body) {
+            return;
+        }
+        var user = this.state.user.trim();
         var body = this.state.body.trim();
-        this.props.onCommentSubmit({name: name, body: body});
-        this.setState({name: '', body: ''})
+
+        this.props.onCommentSubmit({user: user, body: body});
+        this.setState({user: '', body: ''})
     }
     render(){
 
         return(
             <form className="comment-form">
                 <div className="form-group">
-                    <label htmlFor="name">Name:</label>
-                    <input type="name" className="form-control" id="name" placeholder="Enter your name" name="name"
-                           value={this.state.name}
+                    <label htmlFor="user">Name:</label>
+                    <input type="user" className="form-control" id="user" placeholder="Enter your user" user="user"
+                           value={this.state.user}
                            onChange={this.handleAuthorChange}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="comment">Comment:</label>
-                        <textarea className="form-control" rows="5" id="comment" placeholder="Say something..." name="body"
+                        <textarea className="form-control" rows="5" id="comment" placeholder="Say something..." user="body"
                                   value={this.state.body}
                                   onChange={this.handleTextChange}/>
                 </div>

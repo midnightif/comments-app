@@ -22,6 +22,7 @@ class App extends Component {
     getComments(){
 
         axios.get('http://api.host-panel.net/api/comments')
+        // axios.get('http://127.0.0.1:8000/api/comments')
             .then(data =>{
                 this.setState({data: data.data});
             })
@@ -34,10 +35,19 @@ class App extends Component {
             });
     }
     handleCommentSubmit(comment) {
-        let comments = this.state.data;
-        comment.id = Date.now();
-        let newComments  = comments.concat([comment])
-        this.setState({data: newComments});
+
+        comment.title = '11';
+        comment.date = Date.now();
+
+        axios.post(
+            'http://api.host-panel.net/api/newcomments',
+            // 'http://127.0.0.1:8000/app_dev.php/api/newcomments',
+            comment,
+            { 'Content-Type': 'application/json',}
+        ).then(function(response){
+            console.log('saved successfully')
+        });
+        this.getComments();
     }
 
     render() {

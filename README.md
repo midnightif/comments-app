@@ -4,6 +4,8 @@ Now this application works with own small [REST Api application](http://api.host
 
 
 
-It has only one method:
+It has two method:
 
 GET [comments](http://api.host-panel.net/api/comments)
+
+POST [comments](http://api.host-panel.net/api/newcomments)
