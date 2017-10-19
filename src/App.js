@@ -21,8 +21,7 @@ class App extends Component {
     }
     getComments(){
 
-        axios.get('http://api.host-panel.net/api/comments')
-        // axios.get('http://127.0.0.1:8000/api/comments')
+        axios.get('http://api.host-panel.net/comment')
             .then(data =>{
                 this.setState({data: data.data});
             })
@@ -36,12 +35,11 @@ class App extends Component {
     }
     handleCommentSubmit(comment) {
 
-        comment.title = '11';
-        comment.date = Date.now();
+        comment._id = Date.now();
+        comment.date = new Date();
 
         axios.post(
-            'http://api.host-panel.net/api/newcomments',
-            // 'http://127.0.0.1:8000/app_dev.php/api/newcomments',
+            'http://api.host-panel.net/comment',
             comment,
             { 'Content-Type': 'application/json',}
         ).then(function(response){

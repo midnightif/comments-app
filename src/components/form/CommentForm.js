@@ -3,27 +3,29 @@ import React, {Component} from 'react';
 class CommentForm extends Component{
     constructor(props) {
         super(props);
-        this.state = {author: '', text: ''};
+        this.state = {name: '', text: ''};
         this.handleAuthorChange = this.handleAuthorChange.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleAuthorChange(event) {
-        this.setState({user: event.target.value});
+        this.setState({name: event.target.value});
     }
     handleTextChange(event) {
-        this.setState({body: event.target.value});
+        this.setState({text: event.target.value});
     }
     handleSubmit(event) {
         event.preventDefault();
-        if (!user || !body) {
+
+        var name = this.state.text.trim();
+        var text = this.state.text.trim();
+
+        if (!name || !text) {
             return;
         }
-        var user = this.state.user.trim();
-        var body = this.state.body.trim();
 
-        this.props.onCommentSubmit({user: user, body: body});
-        this.setState({user: '', body: ''})
+        this.props.onCommentSubmit({name: name, text: text});
+        this.setState({name: '', text: ''})
     }
     render(){
 
@@ -31,14 +33,14 @@ class CommentForm extends Component{
             <form className="comment-form">
                 <div className="form-group">
                     <label htmlFor="user">Name:</label>
-                    <input type="user" className="form-control" id="user" placeholder="Enter your user" user="user"
-                           value={this.state.user}
+                    <input type="user" className="form-control" id="user" placeholder="Enter your name" name="user"
+                           value={this.state.name}
                            onChange={this.handleAuthorChange}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="comment">Comment:</label>
-                        <textarea className="form-control" rows="5" id="comment" placeholder="Say something..." user="body"
-                                  value={this.state.body}
+                        <textarea className="form-control" rows="5" id="comment" placeholder="Say something..." name="text"
+                                  value={this.state.text}
                                   onChange={this.handleTextChange}/>
                 </div>
                 <div className="form-group">
