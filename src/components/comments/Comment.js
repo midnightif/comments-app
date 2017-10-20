@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import axios from 'axios';
-import { Button, Modal, ButtonGroup } from 'react-bootstrap';
+import { Button, Modal, ButtonGroup, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
 class Comment extends Component{
     /* TODO write prop Types */
@@ -16,32 +16,30 @@ class Comment extends Component{
     // }
     constructor(props) {
         super(props);
-        this.state = {_id: '', showModal: false};
+        this.state = { showModal: false,
+            name: this.props.data.name,
+            text: this.props.data.text,
+            _id: this.props.data._id,
+            date: this.props.data.date
+        };
         this.handleDelete = this.handleDelete.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.handleFieldChange = this.handleFieldChange.bind(this);
     }
-    handleDelete(id) {
+    handleDelete() {
+        const _id = this.state._id;
         axios.delete(
-            'http://api.host-panel.net/comment/'+ id,
+            'http://api.host-panel.net/comment/'+ _id,
             { 'Content-Type': 'application/json',}
         ).then(function(response){
             console.log('deleted successfully')
         });
+        this.closeModal();
         // this.getComments();
     }
 
-    handleEdit(event) {
-        this.openModal();
-        // axios.delete(
-        //     'http://api.host-panel.net/comment/'+ id,
-        //     { 'Content-Type': 'application/json',}
-        // ).then(function(response){
-        //     console.log('deleted successfully')
-        // });
-        // // this.getComments();
-    }
     closeModal() {
         this.setState({ showModal: false });
     }
@@ -49,7 +47,37 @@ class Comment extends Component{
     openModal() {
         this.setState({ showModal: true });
     }
+    handleFieldChange(event){
 
+        const name = event.target.name;
+        const value = event.target.value;
+
+        this.setState({
+            [name]: value
+        });
+    }
+    handleSubmit(event) {
+        event.preventDefault();
+
+        const _id = this.state._id;
+        const name = this.state.name.trim();
+        const text = this.state.text.trim();
+        const date = this.state.date;
+
+        if (!name || !text) {
+            return;
+        }
+        let comment = {_id, name, text, date };
+        axios.put(
+            'http://api.host-panel.net/comment/'+_id,
+            comment,
+            { 'Content-Type': 'application/json',}
+        ).then(function(response){
+            console.log('saved successfully')
+        });
+
+        this.closeModal();
+    }
     render() {
         var name = this.props.data.name;
         var text = this.props.data.text;
@@ -62,8 +90,13 @@ class Comment extends Component{
                     {name} <span className="text-muted">commented <Moment fromNow>{date}</Moment></span>
                     <div role="toolbar" className="btn-toolbar right">
                         <ButtonGroup>
-                            <Button bsStyle="danger" bsSize="xs" id="{id}" onClick={this.handleDelete}><i className="fa fa-times" aria-hidden="true"></i></Button>
-                            <Button bsStyle="default" bsSize="xs" onClick={this.handleEdit}><i className="fa fa-pencil" aria-hidden="true"></i></Button>
+                            <Button
+                                bsStyle="success"
+                                bsSize="xs"
+                                onClick={this.openModal}
+                            >
+                                <i className="fa fa-pencil" aria-hidden="true"/>
+                            </Button>
                         </ButtonGroup>
                     </div>
                 </div>
@@ -71,16 +104,59 @@ class Comment extends Component{
 
                 <Modal show={this.state.showModal} >
                     <Modal.Header >
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>Edit your comment</Modal.Title>
                     </Modal.Header>
+
                     <Modal.Body>
-                        <h4>Text in a modal</h4>
-                        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-                        <hr />
+                        <form>
+                            <FormGroup controlId="formControlsText">
+                                <ControlLabel>Your Name</ControlLabel>
+                                <FormControl
+                                    type="text"
+                                    name="name"
+                                    value={this.state.name}
+                                    onChange={this.handleFieldChange}
+                                />
+
+                            </FormGroup>
+                            <FormGroup controlId="formControlsTextarea">
+                                <ControlLabel>Your comment</ControlLabel>
+                                <FormControl
+                                    componentClass="textarea"
+                                    name="text"
+                                    value={this.state.text}
+                                    onChange={this.handleFieldChange}
+                                />
+                            </FormGroup>
+
+                        </form>
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.closeModal}>Close</Button>
+                        <ButtonGroup >
+                            <Button
+                                bsStyle="danger"
+                                bsSize="sm"
+                                onClick={this.handleDelete}
+                            >
+                                <i className="fa fa-trash-o" aria-hidden="true"/>
+                            </Button>
+                            <Button
+                                bsStyle="primary"
+                                bsSize="sm"
+                                type="submit"
+                                onClick={this.handleSubmit}
+                            >
+                                <i className="fa fa-paper-plane" aria-hidden="true"/>
+                            </Button>
+                            <Button
+                                bsSize="sm"
+                                onClick={this.closeModal}
+                            >
+                                <i className="fa fa-times" aria-hidden="true"/>
+                            </Button>
+                        </ButtonGroup>
+
                     </Modal.Footer>
                 </Modal>
             </div>

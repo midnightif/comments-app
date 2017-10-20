@@ -17,7 +17,7 @@ class CommentForm extends Component{
     handleSubmit(event) {
         event.preventDefault();
 
-        var name = this.state.text.trim();
+        var name = this.state.name.trim();
         var text = this.state.text.trim();
 
         if (!name || !text) {
