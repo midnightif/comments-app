@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import axios from 'axios';
+import { Button, Modal, ButtonGroup } from 'react-bootstrap';
 
 class Comment extends Component{
     /* TODO write prop Types */
@@ -14,12 +16,38 @@ class Comment extends Component{
     // }
     constructor(props) {
         super(props);
-        this.state = {_id: ''};
-        // this.handleDelete = this.handleDelete.bind(this);
+        this.state = {_id: '', showModal: false};
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+    }
+    handleDelete(id) {
+        axios.delete(
+            'http://api.host-panel.net/comment/'+ id,
+            { 'Content-Type': 'application/json',}
+        ).then(function(response){
+            console.log('deleted successfully')
+        });
+        // this.getComments();
     }
 
-    handleDelete(id) {
-        this.props.callbackParent(id);
+    handleEdit(event) {
+        this.openModal();
+        // axios.delete(
+        //     'http://api.host-panel.net/comment/'+ id,
+        //     { 'Content-Type': 'application/json',}
+        // ).then(function(response){
+        //     console.log('deleted successfully')
+        // });
+        // // this.getComments();
+    }
+    closeModal() {
+        this.setState({ showModal: false });
+    }
+
+    openModal() {
+        this.setState({ showModal: true });
     }
 
     render() {
@@ -33,12 +61,28 @@ class Comment extends Component{
                 <div className="title">
                     {name} <span className="text-muted">commented <Moment fromNow>{date}</Moment></span>
                     <div role="toolbar" className="btn-toolbar right">
-                        <button id="{id}" type="button" onClick={() => this.handleDelete(id)} className="btn btn-danger btn-xs"><i className="fa fa-times" aria-hidden="true"></i></button>
-                        <button id="{id}" type="button" className="btn btn-default btn-xs"><i className="fa fa-pencil" aria-hidden="true"></i></button>
+                        <ButtonGroup>
+                            <Button bsStyle="danger" bsSize="xs" id="{id}" onClick={this.handleDelete}><i className="fa fa-times" aria-hidden="true"></i></Button>
+                            <Button bsStyle="default" bsSize="xs" onClick={this.handleEdit}><i className="fa fa-pencil" aria-hidden="true"></i></Button>
+                        </ButtonGroup>
                     </div>
                 </div>
-
                 {text}
+
+                <Modal show={this.state.showModal} >
+                    <Modal.Header >
+                        <Modal.Title>Modal heading</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <h4>Text in a modal</h4>
+                        <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+                        <hr />
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.closeModal}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
     }
