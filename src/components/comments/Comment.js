@@ -16,7 +16,8 @@ class Comment extends Component{
     // }
     constructor(props) {
         super(props);
-        this.state = { showModal: false,
+        this.state = {
+            showModal: false,
             name: this.props.data.name,
             text: this.props.data.text,
             _id: this.props.data._id,
@@ -28,16 +29,17 @@ class Comment extends Component{
         this.closeModal = this.closeModal.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
     }
+
     handleDelete() {
         const _id = this.state._id;
         axios.delete(
-            'http://api.host-panel.net/comment/'+ _id,
+            'http://api.host-panel.net/comments/'+ _id,
             { 'Content-Type': 'application/json',}
-        ).then(function(response){
-            console.log('deleted successfully')
+        ).then((response) => {
+            this.props.deleteComment(_id);
         });
         this.closeModal();
-        // this.getComments();
+
     }
 
     closeModal() {
@@ -48,7 +50,6 @@ class Comment extends Component{
         this.setState({ showModal: true });
     }
     handleFieldChange(event){
-
         const name = event.target.name;
         const value = event.target.value;
 
@@ -56,24 +57,25 @@ class Comment extends Component{
             [name]: value
         });
     }
+
     handleSubmit(event) {
         event.preventDefault();
 
         const _id = this.state._id;
         const name = this.state.name.trim();
         const text = this.state.text.trim();
-        const date = this.state.date;
+        const date = new Date();
 
         if (!name || !text) {
             return;
         }
         let comment = {_id, name, text, date };
         axios.put(
-            'http://api.host-panel.net/comment/'+_id,
+            'http://api.host-panel.net/comments/'+_id,
             comment,
             { 'Content-Type': 'application/json',}
-        ).then(function(response){
-            console.log('saved successfully')
+        ).then(() => {
+            this.props.updateComment(comment);
         });
 
         this.closeModal();
@@ -81,7 +83,6 @@ class Comment extends Component{
     render() {
         var name = this.props.data.name;
         var text = this.props.data.text;
-        var id = this.props.data._id;
         var date = this.props.data.date;
 
         return(

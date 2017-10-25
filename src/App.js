@@ -15,15 +15,32 @@ class App extends Component {
         super(props);
         this.state = {data: [] };
         this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+        this.deleteComment = this.deleteComment.bind(this);
     }
-    componentDidMount (){
+    componentDidMount () {
         this.getComments();
     }
-    getComments(){
+    updateComment = (comment) => {
+        let comments = this.state.data;
+        let index = comments.findIndex(x => x._id === comment._id);
+        comments.splice(index, 1, comment);
 
-        axios.get('http://api.host-panel.net/comment')
-            .then(data =>{
-                this.setState({data: data.data});
+        this.setState({data: comments});
+
+    }
+    deleteComment = (_id) =>{
+        let comments = this.state.data;
+        let index = comments.findIndex(x => x._id === _id);
+        comments.splice(index, 1);
+
+        this.setState({data: comments});
+
+    }
+    getComments = () => {
+
+        axios.get('http://api.host-panel.net/comments')
+            .then( data => {
+                this.setState({data: data.data });
             })
             .catch(function(data) {
                 if(data instanceof Error) {
@@ -32,19 +49,10 @@ class App extends Component {
                     console.log(data);
                 }
             });
+
     }
-    handleCommentSubmit(comment) {
+    handleCommentSubmit = () => {
 
-        comment._id = Date.now();
-        comment.date = new Date();
-
-        axios.post(
-            'http://api.host-panel.net/comment',
-            comment,
-            { 'Content-Type': 'application/json',}
-        ).then(function(response){
-            console.log('saved successfully')
-        });
         this.getComments();
     }
 
@@ -59,9 +67,8 @@ class App extends Component {
                     <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
                 </div>
                 <div className="row">
-                    <CommentContainer data={this.state.data}/>
+                    <CommentContainer updateComment={this.updateComment} deleteComment={this.deleteComment} data={this.state.data}/>
                 </div>
-
             </div>
         );
     }

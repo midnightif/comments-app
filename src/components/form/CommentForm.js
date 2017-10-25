@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 
 class CommentForm extends Component{
     constructor(props) {
@@ -17,14 +18,25 @@ class CommentForm extends Component{
     handleSubmit(event) {
         event.preventDefault();
 
-        var name = this.state.name.trim();
-        var text = this.state.text.trim();
+        let name = this.state.name.trim();
+        let text = this.state.text.trim();
 
         if (!name || !text) {
             return;
         }
 
-        this.props.onCommentSubmit({name: name, text: text});
+        let date = new Date();
+        let comment = { name: name, text: text, date: date }
+
+        axios.post(
+            'http://api.host-panel.net/comments',
+            comment,
+            { 'Content-Type': 'application/json',}
+        ).then(function(){
+            console.log('saved successfully')
+        });
+
+        this.props.onCommentSubmit();
         this.setState({name: '', text: ''})
     }
     render(){

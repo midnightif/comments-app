@@ -2,15 +2,17 @@ import React, {Component } from 'react';
 import Comment from './Comment';
 
 class CommentContainer extends Component{
+
     render() {
-        var data = this.props.data;
-        var commentTemplate;
+        let data = this.props.data;
+        let commentTemplate;
+
         if (data.length > 0) {
-            commentTemplate = data.map(function (item, index) {
+            commentTemplate = data.map((item, index) => {
 
                 return (
                     <div key={index}>
-                        <Comment data={item} />
+                        <Comment updateComment={this.props.updateComment} deleteComment={this.props.deleteComment} data={item} />
                     </div>
                 );
             })
