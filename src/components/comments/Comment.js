@@ -23,14 +23,9 @@ class Comment extends Component{
             _id: this.props.data._id,
             date: this.props.data.date
         };
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.handleFieldChange = this.handleFieldChange.bind(this);
     }
 
-    handleDelete() {
+    handleDelete = () => {
         const _id = this.state._id;
         axios.delete(
             'http://api.host-panel.net/comments/'+ _id,
@@ -40,25 +35,26 @@ class Comment extends Component{
         });
         this.closeModal();
 
-    }
+    };
 
-    closeModal() {
+    closeModal = () => {
         this.setState({ showModal: false });
-    }
+    };
 
-    openModal() {
+    openModal = () => {
         this.setState({ showModal: true });
-    }
-    handleFieldChange(event){
+    };
+
+    handleFieldChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
 
         this.setState({
             [name]: value
         });
-    }
+    };
 
-    handleSubmit(event) {
+    handleSubmit = (event) => {
         event.preventDefault();
 
         const _id = this.state._id;
@@ -79,11 +75,11 @@ class Comment extends Component{
         });
 
         this.closeModal();
-    }
+    };
     render() {
-        var name = this.props.data.name;
-        var text = this.props.data.text;
-        var date = this.props.data.date;
+        const name = this.props.data.name;
+        const text = this.props.data.text;
+        const date = this.props.data.date;
 
         return(
             <div className="comment-box">
@@ -94,8 +90,7 @@ class Comment extends Component{
                             <Button
                                 bsStyle="success"
                                 bsSize="xs"
-                                onClick={this.openModal}
-                            >
+                                onClick={this.openModal}>
                                 <i className="fa fa-pencil" aria-hidden="true"/>
                             </Button>
                         </ButtonGroup>
@@ -116,8 +111,7 @@ class Comment extends Component{
                                     type="text"
                                     name="name"
                                     value={this.state.name}
-                                    onChange={this.handleFieldChange}
-                                />
+                                    onChange={this.handleFieldChange} />
 
                             </FormGroup>
                             <FormGroup controlId="formControlsTextarea">
@@ -126,8 +120,7 @@ class Comment extends Component{
                                     componentClass="textarea"
                                     name="text"
                                     value={this.state.text}
-                                    onChange={this.handleFieldChange}
-                                />
+                                    onChange={this.handleFieldChange} />
                             </FormGroup>
 
                         </form>
@@ -138,22 +131,19 @@ class Comment extends Component{
                             <Button
                                 bsStyle="danger"
                                 bsSize="sm"
-                                onClick={this.handleDelete}
-                            >
+                                onClick={this.handleDelete} >
                                 <i className="fa fa-trash-o" aria-hidden="true"/>
                             </Button>
                             <Button
                                 bsStyle="primary"
                                 bsSize="sm"
                                 type="submit"
-                                onClick={this.handleSubmit}
-                            >
+                                onClick={this.handleSubmit}>
                                 <i className="fa fa-paper-plane" aria-hidden="true"/>
                             </Button>
                             <Button
                                 bsSize="sm"
-                                onClick={this.closeModal}
-                            >
+                                onClick={this.closeModal} >
                                 <i className="fa fa-times" aria-hidden="true"/>
                             </Button>
                         </ButtonGroup>

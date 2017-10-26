@@ -14,12 +14,10 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {data: [] };
-        this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
-        this.deleteComment = this.deleteComment.bind(this);
     }
     componentDidMount () {
         this.getComments();
-    }
+    };
     updateComment = (comment) => {
         let comments = this.state.data;
         let index = comments.findIndex(x => x._id === comment._id);
@@ -27,7 +25,7 @@ class App extends Component {
 
         this.setState({data: comments});
 
-    }
+    };
     deleteComment = (_id) =>{
         let comments = this.state.data;
         let index = comments.findIndex(x => x._id === _id);
@@ -35,9 +33,8 @@ class App extends Component {
 
         this.setState({data: comments});
 
-    }
+    };
     getComments = () => {
-
         axios.get('http://api.host-panel.net/comments')
             .then( data => {
                 this.setState({data: data.data });
@@ -50,11 +47,13 @@ class App extends Component {
                 }
             });
 
-    }
-    handleCommentSubmit = () => {
+    };
+    handleCommentSubmit = (comment) => {
+        let comments = this.state.data;
+        comments.push(comment);
+        this.setState({data: comments});
 
-        this.getComments();
-    }
+    };
 
     render() {
         return (

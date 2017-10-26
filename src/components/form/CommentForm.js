@@ -5,17 +5,22 @@ class CommentForm extends Component{
     constructor(props) {
         super(props);
         this.state = {name: '', text: ''};
-        this.handleAuthorChange = this.handleAuthorChange.bind(this);
-        this.handleTextChange = this.handleTextChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleAuthorChange(event) {
+    handleFieldChange = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+
+        this.setState({
+            [name]: value
+        });
+    };
+    handleAuthorChange = (event) => {
         this.setState({name: event.target.value});
-    }
-    handleTextChange(event) {
+    };
+    handleTextChange = (event) => {
         this.setState({text: event.target.value});
-    }
-    handleSubmit(event) {
+    };
+    handleSubmit = (event) => {
         event.preventDefault();
 
         let name = this.state.name.trim();
@@ -25,8 +30,9 @@ class CommentForm extends Component{
             return;
         }
 
+        let _id = Date.now();
         let date = new Date();
-        let comment = { name: name, text: text, date: date }
+        let comment = { _id: _id, name: name, text: text, date: date }
 
         axios.post(
             'http://api.host-panel.net/comments',
@@ -36,7 +42,7 @@ class CommentForm extends Component{
             console.log('saved successfully')
         });
 
-        this.props.onCommentSubmit();
+        this.props.onCommentSubmit(comment);
         this.setState({name: '', text: ''})
     }
     render(){
@@ -45,15 +51,15 @@ class CommentForm extends Component{
             <form className="comment-form">
                 <div className="form-group">
                     <label htmlFor="user">Name:</label>
-                    <input type="user" className="form-control" id="user" placeholder="Enter your name" name="user"
+                    <input type="user" className="form-control" id="user" placeholder="Enter your name" name="name"
                            value={this.state.name}
-                           onChange={this.handleAuthorChange}/>
+                           onChange={this.handleFieldChange}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="comment">Comment:</label>
                         <textarea className="form-control" rows="5" id="comment" placeholder="Say something..." name="text"
                                   value={this.state.text}
-                                  onChange={this.handleTextChange}/>
+                                  onChange={this.handleFieldChange}/>
                 </div>
                 <div className="form-group">
                     <button type="submit" className="btn btn-default" onClick={this.handleSubmit}>Submit</button>
