@@ -61,35 +61,35 @@ class CommentForm extends Component{
         const isDisabled = Object.keys(errors).some(x => errors[x]);
 
         return(
-            <form className="comment-form">
-                <div className="form-group">
-                    <label htmlFor="user">Name:</label>
+            <form className='comment-form'>
+                <div className='form-group'>
+                    <label htmlFor='user'>Name:</label>
                     <input
-                        type="user"
-                        className={errors.name ? "error form-control" : "form-control"}
-                        id="user"
-                        placeholder="Enter your name"
-                        name="name"
+                        type='user'
+                        className={errors.name ? 'error form-control' : 'form-control'}
+                        id='user'
+                        placeholder='Enter your name'
+                        name='name'
                         value={this.state.name}
                         onChange={this.handleFieldChange}
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="comment">Comment:</label>
+                <div className='form-group'>
+                    <label htmlFor='comment'>Comment:</label>
                     <textarea
-                        className={errors.text ? "error form-control" : "form-control"}
-                        rows="5"
-                        id="comment"
-                        placeholder="Say something..."
-                        name="text"
+                        className={errors.text ? 'error form-control' : 'form-control'}
+                        rows='5'
+                        id='comment'
+                        placeholder='Say something...'
+                        name='text'
                         value={this.state.text}
                         onChange={this.handleFieldChange}
                     />
                 </div>
-                <div className="form-group">
+                <div className='form-group'>
                     <button
-                        type="submit"
-                        className="btn btn-default"
+                        type='submit'
+                        className='btn btn-default'
                         onClick={this.handleSubmit}
                         disabled={isDisabled}
                     >

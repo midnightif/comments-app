@@ -1,19 +1,10 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import axios from 'axios';
 import { Button, Modal, ButtonGroup, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
 class Comment extends Component{
-    /* TODO write prop Types */
-    // static propTypes = {
-    //
-    //     data: PropTypes.shape({
-    //         id: PropTypes.number.isRequired,
-    //         // user: PropTypes.object.isRequired,
-    //         body: PropTypes.string.isRequired
-    // })
-    // }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -30,7 +21,7 @@ class Comment extends Component{
         axios.delete(
             'http://api.host-panel.net/comments/'+ _id,
             { 'Content-Type': 'application/json',}
-        ).then((response) => {
+        ).then(() => {
             this.props.deleteComment(_id);
         });
         this.closeModal();
@@ -82,16 +73,16 @@ class Comment extends Component{
         const date = this.props.data.date;
 
         return(
-            <div className="comment-box">
-                <div className="title">
-                    {name} <span className="text-muted">commented <Moment fromNow>{date}</Moment></span>
-                    <div role="toolbar" className="btn-toolbar right">
+            <div className='comment-box'>
+                <div className='title'>
+                    {name} <span className='text-muted'>commented <Moment fromNow>{date}</Moment></span>
+                    <div role='toolbar' className='btn-toolbar right'>
                         <ButtonGroup>
                             <Button
-                                bsStyle="success"
-                                bsSize="xs"
+                                bsStyle='success'
+                                bsSize='xs'
                                 onClick={this.openModal}>
-                                <i className="fa fa-pencil" aria-hidden="true"/>
+                                <i className='fa fa-pencil' aria-hidden='true'/>
                             </Button>
                         </ButtonGroup>
                     </div>
@@ -105,20 +96,20 @@ class Comment extends Component{
 
                     <Modal.Body>
                         <form>
-                            <FormGroup controlId="formControlsText">
+                            <FormGroup controlId='formControlsText'>
                                 <ControlLabel>Your Name</ControlLabel>
                                 <FormControl
-                                    type="text"
-                                    name="name"
+                                    type='text'
+                                    name='name'
                                     value={this.state.name}
                                     onChange={this.handleFieldChange} />
 
                             </FormGroup>
-                            <FormGroup controlId="formControlsTextarea">
+                            <FormGroup controlId='formControlsTextarea'>
                                 <ControlLabel>Your comment</ControlLabel>
                                 <FormControl
-                                    componentClass="textarea"
-                                    name="text"
+                                    componentClass='textarea'
+                                    name='text'
                                     value={this.state.text}
                                     onChange={this.handleFieldChange} />
                             </FormGroup>
@@ -129,22 +120,22 @@ class Comment extends Component{
                     <Modal.Footer>
                         <ButtonGroup >
                             <Button
-                                bsStyle="danger"
-                                bsSize="sm"
+                                bsStyle='danger'
+                                bsSize='sm'
                                 onClick={this.handleDelete} >
-                                <i className="fa fa-trash-o" aria-hidden="true"/>
+                                <i className='fa fa-trash-o' aria-hidden='true'/>
                             </Button>
                             <Button
-                                bsStyle="primary"
-                                bsSize="sm"
-                                type="submit"
+                                bsStyle='primary'
+                                bsSize='sm'
+                                type='submit'
                                 onClick={this.handleSubmit}>
-                                <i className="fa fa-paper-plane" aria-hidden="true"/>
+                                <i className='fa fa-paper-plane' aria-hidden='true'/>
                             </Button>
                             <Button
-                                bsSize="sm"
+                                bsSize='sm'
                                 onClick={this.closeModal} >
-                                <i className="fa fa-times" aria-hidden="true"/>
+                                <i className='fa fa-times' aria-hidden='true'/>
                             </Button>
                         </ButtonGroup>
 

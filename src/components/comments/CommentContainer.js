@@ -22,7 +22,7 @@ class CommentContainer extends Component{
         }
 
         return (
-            <div className="comments-container">
+            <div className='comments-container'>
                 {commentTemplate}
             </div>
         )

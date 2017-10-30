@@ -1,6 +1,7 @@
 import React, {Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import CommentContainer from './components/comments/CommentContainer'
 import CommentForm from './components/form/CommentForm'
 import './vendors/bootstrap/css/bootstrap.min.css'
@@ -11,13 +12,13 @@ class App extends Component {
     static  propTypes = {
         data: PropTypes.array
     };
-    constructor(props) {
-        super(props);
-        this.state = {data: [] };
-    }
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {data: [] };
+    // }
     componentDidMount () {
-        this.getComments();
-    };
+        // this.getComments();
+    }
     updateComment = (comment) => {
         let comments = this.state.data;
         let index = comments.findIndex(x => x._id === comment._id);
@@ -57,20 +58,28 @@ class App extends Component {
 
     render() {
         return (
-            <div className="container">
+            <div className='container'>
 
-                <div className="row">
+                <div className='row'>
                     <h1>Comments</h1>
                 </div>
-                <div className="row">
+                <div className='row'>
                     <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
                 </div>
-                <div className="row">
-                    <CommentContainer updateComment={this.updateComment} deleteComment={this.deleteComment} data={this.state.data}/>
+                <div className='row'>
+                    <CommentContainer updateComment={this.updateComment} deleteComment={this.deleteComment}/>
+                    {/*<CommentContainer updateComment={this.updateComment} deleteComment={this.deleteComment} data={this.state.data}/>*/}
                 </div>
             </div>
         );
     }
 }
 
-export default App;
+function mapStateToProps (state) {
+    return {
+        user: state.user
+    }
+}
+
+
+export default connect(mapStateToProps)(App);
